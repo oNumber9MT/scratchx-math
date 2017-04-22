@@ -21,11 +21,33 @@
     callback(Math.pow(x, y));
   };
 
+  // 合計
+  ext.getSum = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+      sum = sum + Number(array[i]);
+    }
+    callback(sum);
+  };
+
+  // 平均
+  ext.getAve = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+      sum = sum + Number(array[i]);
+    }
+    callback(sum/array.length);
+  };
+
   var descriptor = {
     blocks: [
       ['R', 'π', 'getPI'],
       ['R', '%n の立方根', 'getCbrt', 8],
       ['R', '%n の %n 乗', 'getPow', 2, 3],
+      ['R', '%s 区切りの数値データ %s の合計', 'getSum', ','],
+      ['R', '%s 区切りの数値データ %s の平均', 'getAve', ','],
     ]
   };
 
