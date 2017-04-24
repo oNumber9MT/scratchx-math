@@ -55,6 +55,20 @@
     callback(array_out[array_out.length - 1]);
   }
 
+  // 中央値
+  ext.getMedian = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    var wk_array = arraySortAsc(array);
+    if (wk_array.length % 2 == 0) {
+      var num = Math.floor(wk_array.length / 2);
+      var ave = (Number(wk_array[num - 1]) + Number(wk_array[num])) / 2;
+      callback(ave);
+    } else {
+      var num = Math.round(wk_array.length / 2);
+      callback(wk_array[num - 1]);
+    }
+  }
+
   // ソート（昇順）
   ext.sortAsc = function(sep, arr, callback) {
     var array = arr.split(sep);
@@ -98,6 +112,7 @@
       ['R', '%s 区切りの数値データ %s の平均', 'getAve', ','],
       ['R', '%s 区切りの数値データ %s の最小値', 'getMin', ','],
       ['R', '%s 区切りの数値データ %s の最大値', 'getMax', ','],
+      ['R', '%s 区切りの数値データ %s の中央値', 'getMedian', ','],
       ['R', '%s 区切りのデータ %s を昇順でソートしたもの', 'sortAsc', ','],
       ['R', '%s 区切りのデータ %s を降順でソートしたもの', 'sortDesc', ','],
     ]
