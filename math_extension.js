@@ -120,11 +120,58 @@
     }
 
     // divisorの履歴を全て積算
-    var greatestCommon = 1;
+    var result = 1;
     for (var i = 0; i < divisorArray.length; i++) {
-      greatestCommon = greatestCommon * divisorArray[i];
+      result = result * divisorArray[i];
     }
-    callback(greatestCommon);
+    callback(result);
+  }
+
+  // 最小公倍数
+  ext.getLeastCommon = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    var divisorArray = [];
+    var flg_finish = 0;
+    while (flg_finish == 0) { // 共通で割れる数字がなくなるまで繰り返し
+      var flg_found_divisor = 0; // divisorが見つかれば1
+      array = arraySortDesc(array);
+      for (var divisor = 2; divisor < array[0] + 1; divisor++) { // 割れる数を探す。2から割る数の最小値までの間で検索
+        var flg_divided_num = 0; // 配列の数のうち、divisorで割り切れる数値の数
+        for(var i = 0; i < array.length; i++) {
+          if (array[i] % divisor == 0) {
+            flg_divided_num++;
+          }
+        }
+        if (flg_divided_num > 1) {
+          flg_found_divisor = 1;
+          break; // 配列の2つ以上数で割り切れたので、divisorが決定
+        }
+      }
+
+      // divisorが見つかれば、divisorの履歴配列に追加。元の数値配列をそれぞれ割る
+      if (flg_found_divisor == 1) {
+        divisorArray.push(divisor);
+        for(var i = 0; i < array.length; i++) {
+          if(array[i] % divisor == 0) {
+            var tmp = array[i] / divisor;
+            array[i] = tmp;
+          }
+        }
+      } else {
+        flg_finish = 1;
+      }
+    }
+
+    // divisorの履歴を全て積算
+    var result = 1;
+    for (var i = 0; i < divisorArray.length; i++) {
+      result = result * divisorArray[i];
+    }
+    // 最小公倍数を求める場合は、数値配列の余りも積算
+    for(var i = 0; i < array.length; i++) {
+      result = result * array[i];
+    }
+    callback(result);
   }
 
   // ====================================
@@ -164,6 +211,7 @@
       ['R', '%s 区切りの数値データ %s の最大値', 'getMax', ','],
       ['R', '%s 区切りの数値データ %s の中央値', 'getMedian', ','],
       ['R', '%s 区切りの数値データ %s の最大公約数', 'getGreatestCommon', ','],
+      ['R', '%s 区切りの数値データ %s の最小公倍数', 'getLeastCommon', ','],
       ['R', '%s 区切りのデータ %s を昇順でソートしたもの', 'sortAsc', ','],
       ['R', '%s 区切りのデータ %s を降順でソートしたもの', 'sortDesc', ','],
     ]
