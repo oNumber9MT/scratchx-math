@@ -94,7 +94,7 @@
       }
     }, cArray);
 
-    // 最大回数と同いカウント数の要素を検出
+    // 最大回数と同じカウント数の要素を検出
     var result = "";
     Object.keys(cArray).forEach(function(key) {
       var val = this[key];
@@ -212,6 +212,49 @@
     callback(result);
   }
 
+  // 分散
+  ext.getVariance = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    // 平均を求める
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+      sum = sum + Number(array[i]);
+    }
+    var avr = sum/array.length;
+
+    // 分散を求める
+    var total = 0;
+    for (var i = 0; i < array.length; i++) {
+      total += (array[i] - avr) * (array[i] - avr);
+    }
+    variance = total/array.length;
+
+    callback(variance);
+  }
+
+  // 標準偏差
+  ext.getStdDeviation = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    // 平均を求める
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+      sum = sum + Number(array[i]);
+    }
+    var avr = sum/array.length;
+
+    // 分散を求める
+    var total = 0;
+    for (var i = 0; i < array.length; i++) {
+      total += (array[i] - avr) * (array[i] - avr);
+    }
+    variance = total/array.length;
+
+    // 標準偏差
+    std_deviation = Math.sqrt(variance);
+
+    callback(std_deviation);
+  }
+
   // ====================================
   // 共通処理
   // ====================================
@@ -251,6 +294,8 @@
       ['R', '%s 区切りのデータ %s の最頻値', 'getMode', ','],
       ['R', '%s 区切りの数値データ %s の最大公約数', 'getGreatestCommon', ','],
       ['R', '%s 区切りの数値データ %s の最小公倍数', 'getLeastCommon', ','],
+      ['R', '%s 区切りの数値データ %s の分散', 'getVariance', ','],
+      ['R', '%s 区切りの数値データ %s の標準偏差', 'getStdDeviation', ','],
       ['R', '%s 区切りのデータ %s を昇順でソートしたもの', 'sortAsc', ','],
       ['R', '%s 区切りのデータ %s を降順でソートしたもの', 'sortDesc', ','],
     ]
