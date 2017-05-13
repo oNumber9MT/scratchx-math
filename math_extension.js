@@ -72,6 +72,44 @@
     }
   }
 
+  // 最頻値
+  ext.getMode = function(sep, arr, callback) {
+    var array = arr.split(sep);
+    // 要素毎の登場回数をカウント
+    var cArray = {};
+    for (var i = 0; i < array.length; i++) {
+      if (cArray[array[i]]) {
+        cArray[array[i]]++;
+      } else {
+        cArray[array[i]] = 1;
+      }
+    }
+
+    // 最大回数を検出
+    var max = 0;
+    Object.keys(cArray).forEach(function(key) {
+      var val = this[key];
+      if (val > max) {
+        max = val;
+      }
+    }, cArray);
+
+    // 最大回数と同いカウント数の要素を検出
+    var result = "";
+    Object.keys(cArray).forEach(function(key) {
+      var val = this[key];
+      if (val == max) {
+        if (result == "") {
+          result = key;
+        } else {
+          result = result + ',' + key;
+        }
+      }
+    }, cArray);
+
+    callback(result);
+  }
+
   // ソート（昇順）
   ext.sortAsc = function(sep, arr, callback) {
     var array = arr.split(sep);
@@ -210,6 +248,7 @@
       ['R', '%s 区切りの数値データ %s の最小値', 'getMin', ','],
       ['R', '%s 区切りの数値データ %s の最大値', 'getMax', ','],
       ['R', '%s 区切りの数値データ %s の中央値', 'getMedian', ','],
+      ['R', '%s 区切りのデータ %s の最頻値', 'getMode', ','],
       ['R', '%s 区切りの数値データ %s の最大公約数', 'getGreatestCommon', ','],
       ['R', '%s 区切りの数値データ %s の最小公倍数', 'getLeastCommon', ','],
       ['R', '%s 区切りのデータ %s を昇順でソートしたもの', 'sortAsc', ','],
